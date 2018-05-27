@@ -1,11 +1,13 @@
 # Econometrics Seminar-2018
 # 27.05.18
+# Table 1
+
+#@Prerequisites
+#################################################################################
 Sys.info()  
 options(scipen=999)
-#install.packages(dummies)
-#library(dummies)
 
-#library(benchmarkme)
+#libraries
 library(hdm)
 library(foreign);
 library(quantreg);
@@ -26,14 +28,16 @@ library(ivmodel)
 require(gdata)
 #library(dummies)
 
+#adjust depending on your working directory;;; try eventually if downloaded from github
+#setwd("C:\\Users\\xxx\\Downloads\\Inference_DML)
+
 setwd("C:\\Users\\cor64\\Desktop\\Uni\\Erasmus\\Thesis\\DMLonGitHub-master\\")
 
+#@Data
+#######################################################################################
 #read Data
 df = read.xls ("Slave.xls", sheet = 1, header = TRUE)
-
-#source("Monte_Carlo.R")
-#check works
-
+summary(df)
 
 #baseline_controls:
 #age 
@@ -59,27 +63,23 @@ df = read.xls ("Slave.xls", sheet = 1, header = TRUE)
 
 
 #@TABLE 1
-#test data set regression; replicate Table 1
+#test data set regression;replicate Table 1
 
 #reg trust_neighbors exports `baseline_controls', 
 
 Y <- df$trust_neighbors
+D= df$exports
 D1= df$exports
-
 D2= df$export_area
-
 D3= df$export_pop
-
 D4= df$ln_exports
-
 D5= df$ln_export_area
-
 D6= df$ln_export_pop
 
 #baline_controls=df[,c(1,2,5)]
 baline_controls=df[ , c("age","age2","male","urban_dum","district_ethnic_frac","frac_ethnicity_in_district")]
-
 baline_controls_plus_variables_not_in_dummyform = df[ , c("education","occupation","religion","living_conditions","isocode")]
+
 
 # construct for those variables dummies ( in excel file those have one column but in Stata these are binary dummies ???)
 #  i.education 
@@ -88,118 +88,114 @@ baline_controls_plus_variables_not_in_dummyform = df[ , c("education","occupatio
 #  i.living_conditions 
 #  i.isocode
 
-
-
-  
+education=df[ , c("education")]
+education_fac= factor(df[ , c("education")])
+occupation=df[ , c("occupation")]
+occupation_fac=factor(df[ , c("occupation")])
+religion=df[ , c("religion")]
+religion_fac=factor(df[ , c("religion")])
+living_conditions=df[ , c("living_conditions")]
+living_conditions_fac=factor(df[ , c("living_conditions")])
+isocode=df[ , c("isocode")]
 #"age age2 male urban_dum i.education i.occupation i.religion i.living_conditions district_ethnic_frac frac_ethnicity_in_district i.isocode"
 
 
+#@ignore
+#create a dummy for each value of education occupation religion living_conditions and isode_code
+#educ_0 <- as.numeric(education == 0)
+#educ_1 <- as.numeric(education == 1)
+#educ_2 <- as.numeric(education == 2)
+#educ_3 <- as.numeric(education == 3)
+#educ_4 <- as.numeric(education == 4)
+#educ_5 <- as.numeric(education == 5)
+#educ_6 <- as.numeric(education == 6)
+#educ_7 <- as.numeric(education == 7)
+#educ_8 <- as.numeric(education == 8)
+#educ_9 <- as.numeric(education == 9)
 
-summary(df)
 
-
-#test_regression <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district, data=df)
-#summary(test_regression) 
-
+#@wrong1; without additional dummies
+test_regression1 <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district, data=df)
+summary(test_regression1) 
 # -0.00061982368 parameter deviates from ???0.00068
 
-# try simplty with those regressors; FAIL
-baline_controls_plus_variables_not_in_dummyform
-#test_regression <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education+occupation+religion+living_conditions+isocode, data=df)
-#summary(test_regression) 
 
+#@wrong2; try simplty with privded regressors (numerical and not adjusted for levels of eduction, etc.)
+baline_controls_plus_variables_not_in_dummyform
+test_regression2 <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education+occupation+religion+living_conditions+isocode, data=df)
+summary(test_regression2) 
 # -0.00076440340 parameter deviates from ???0.00068
 
 
-
-#build Dummies for those variables like in Stata file:
-
+#@partially correct: build Dummies for those variables like in Stata file:
 baline_controls_plus_variables_not_in_dummyform = df[ , c("education","occupation","religion","living_conditions","isocode")]
-
-
 education=df[ , c("education")]
 education_fac= factor(df[ , c("education")])
-
 occupation=df[ , c("occupation")]
-
 occupation_fac=factor(df[ , c("occupation")])
-
-
 religion=df[ , c("religion")]
 religion_fac=factor(df[ , c("religion")])
-
 living_conditions=df[ , c("living_conditions")]
 living_conditions_fac=factor(df[ , c("living_conditions")])
-
 isocode=df[ , c("isocode")]
-
-
-#dummy <- as.numeric(education == 1957)
-
+#other example on how to implement dummy; too much work
+#dummy <- as.numeric(education == 1234)
 baline_controls_plus_variables_not_in_dummyform
-test_regression <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions+isocode, data=df)
-summary(test_regression) 
-
-# -0.00076440340 parameter deviates from ???0.00068
-
-#create a dummy for each value of education occupation religion living_conditions and isode_code
-
-educ_0 <- as.numeric(education == 0)
-educ_1 <- as.numeric(education == 1)
-educ_2 <- as.numeric(education == 2)
-educ_3 <- as.numeric(education == 3)
-educ_4 <- as.numeric(education == 4)
-educ_5 <- as.numeric(education == 5)
-educ_6 <- as.numeric(education == 6)
-educ_7 <- as.numeric(education == 7)
-educ_8 <- as.numeric(education == 8)
-educ_9 <- as.numeric(education == 9)
-
-#educ_0 +educ_1 +educ_2 +educ_3 +educ_4 +educ_5 +educ_6 +educ_7 +educ_8 +educ_9
-
-test_regression <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+educ_0 +educ_1 +educ_2 +educ_3 +educ_4 +educ_5 +educ_6 +educ_7 +educ_8 +educ_9 +occupation+religion+living_conditions+isocode, data=df)
-summary(test_regression) 
 
 
 # works a bit; close to D 
-test_regression <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education+occupation+religion+living_conditions+isocode, data=df)
-summary(test_regression) 
+test_regression5 <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education+occupation+religion+living_conditions+isocode, data=df)
+summary(test_regression5) 
 
 
-#new trial with factored stuff 
+
+#@replicate Results Table 1
+###################################################################################################
+
+test_regression6 <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions+isocode, data=df)
+summary(test_regression6) 
+# correct estimator and R^2
+
+#@ignore
+#test_regression <- lm( Y~ D+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+educ_0 +educ_1 +educ_2 +educ_3 +educ_4 +educ_5 +educ_6 +educ_7 +educ_8 +educ_9 +occupation+religion+living_conditions+isocode, data=df)
+#summary(test_regression) 
+
+
+
 #Table 1_1
-test_regression <- lm( Y~ D1+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
-summary(test_regression) 
+test_regression7 <- lm( Y~ D1+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
+summary(test_regression7) 
 # works okayish ~-0.00067914 vs. -0.00068
 # R^2 = 0.16 vs. 0.1558 (unadjusted, adjusted even smaller 0.1526 (( )))
-# std error stil false 0.00004855 vs ~ 0.0013
+# std error stil false 0.00004855 vs ~ 0.0013; how to adjust for Clustering standard error in paper ???
 
 
 #Table 1_2
-
-test_regression <- lm( Y~ D2+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
-summary(test_regression) 
+test_regression8 <- lm( Y~ D2+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
+summary(test_regression8) 
 
 #Table 1_3
-test_regression <- lm( Y~ D3+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
-summary(test_regression) 
+test_regression9 <- lm( Y~ D3+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
+summary(test_regression9) 
 
 #Table 1_4
-test_regression <- lm( Y~ D4+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
-summary(test_regression) 
+test_regression10 <- lm( Y~ D4+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
+summary(test_regression10) 
 
 #Table 1_5
-test_regression <- lm( Y~ D5+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
-summary(test_regression) 
+test_regression11 <- lm( Y~ D5+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
+summary(test_regression11) 
 
 #Table 1_6
-test_regression <- lm( Y~ D6+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
-summary(test_regression) 
+test_regression12 <- lm( Y~ D6+ age+age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education_fac+occupation_fac+religion_fac+living_conditions_fac+isocode, data=df)
+summary(test_regression12) 
+##################################################################################################
 
 
-###################### Loading functions and Data ##############################
+#@Loading functions and Data 
+################################################################################################
 
-rm(list = ls())  # Clear everything out so we're starting clean
+#rm(list = ls())  # Clear everything out so we're starting clean
 source("ML_Functions.R")  
 source("Moment_Functions.R")  
 options(warn=-1)
@@ -207,24 +203,21 @@ set.seed(1211);
 cl   <- makeCluster(2, outfile="")
 
 
-data_input=
+data_input=df
 
 
-#data(AJR); 
 
 
-################################ Inputs ########################################
+#@Inputs
+#########################################################################
 
 # Outcome Variable
-#y  <- "GDP" #:A? log? 
-
 y <- "trust_neighbors"
+
 # Treatment Variable
 d  <- "exports"
 
-
 # Controls
-
 x <- "age +age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education+occupation+religion+living_conditions+isocode" # use this for tree-based methods like forests and boosted trees
 xl  <- "(age +age2 +male +urban_dum+district_ethnic_frac+frac_ethnicity_in_district+education+occupation+religion+living_conditions+isocode)^2" #use this for rlasso etc.
 
@@ -243,8 +236,9 @@ methods      <- c("RLasso","Trees", "Boosting", "Forest", "Nnet","Ensemble")    
 
 split        <- 3                                                                  # number of splits
 
-################################ Estimation ##################################################
+##################################################################################
 
+#@Estimation
 ############## Arguments for DoubleML function:
 
 # data:     : data matrix
@@ -265,14 +259,18 @@ split        <- 3                                                               
 
 r <- foreach(k = 1:split, .combine='rbind', .inorder=FALSE, .packages=c('MASS','randomForest','neuralnet','gbm', 'sandwich', 'hdm', 'nnet', 'rpart','glmnet')) %dopar% { 
   
-  dml <- DoubleML(data=df, y=y, d=d, z=NULL, xx=x, xL=xl, methods=methods, DML="DML2", nfold=2, est="plinear", arguments=arguments, ensemble=ensemble, silent=FALSE, trim=c(0.01,0.99)) 
+  dml <- DoubleML(data=data_input, y=y, d=d, z=NULL, xx=x, xL=xl, methods=methods, DML="DML2", nfold=2, est="plinear", arguments=arguments, ensemble=ensemble, silent=FALSE, trim=c(0.01,0.99)) 
   
   data.frame(t(dml[1,]), t(dml[2,]))
   
 }
 
-################################ Compute Output Table ########################################
+########################################################################
 
+
+
+#@ Compute Output Table 
+################################################################################
 result           <- matrix(0,3, length(methods)+1)
 colnames(result) <- cbind(t(methods), "best")
 rownames(result) <- cbind("Median ATE", "se(median)",  "se")
@@ -297,28 +295,4 @@ for(i in 1:ncol(result_table)){
 }
 
 print(xtable(result_table, digits=3))
-
-
-
-
-
-
-
-
-
-
-########################################################################
-
-#construct Histograms
-
-#part2:
-
-#construct tests
-
-
-#part3:
-
-#construct test statistics
-
-#part4: (ALEX)
-
+#########################################################################################
