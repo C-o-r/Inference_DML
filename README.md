@@ -12,10 +12,10 @@ Attached are:
 -A subfolder containing the replications files for the paper "Double/Debiased Machine Learning for Treatment
 and Structural Parameters"
 
--A main R.Script I wrote in order to replicate Table 1
+-A main R.Script I wrote in order to replicate Table 1 (not finished yet)
 
--Draft Nr.1
+-Draft Nr.1 (not attached yet)
 
--A list of questions regarding the correctness of the main R.Script.
+-A list of questions regarding the correctness of the main R.Script. (not there yet)
 
->>>>>>> 20d704840489359db60499b20b8d4c09b6204ce3
+
