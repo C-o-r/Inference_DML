@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1528893402549.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3A06E3F5",
+    "lastKnownWriteTime" : 1528893643,
+    "last_content_update" : 1528893643499,
+    "path" : "C:/Users/cor64/Desktop/Uni/Erasmus/Thesis/DMLonGitHub-master/Monte_Carlo.R",
+    "project_path" : "Monte_Carlo.R",
+    "properties" : {
+        "cursorPosition" : "36,0",
+        "scrollLine" : "32"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

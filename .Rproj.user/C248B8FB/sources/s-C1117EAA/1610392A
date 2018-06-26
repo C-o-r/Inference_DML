@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1528892655803.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "1610392A",
+    "lastKnownWriteTime" : 1528061045,
+    "last_content_update" : 1528895973530,
+    "path" : "C:/Users/cor64/Desktop/Uni/Erasmus/Thesis/DMLonGitHub-master/main.R",
+    "project_path" : "main.R",
+    "properties" : {
+        "cursorPosition" : "68,12",
+        "scrollLine" : "45"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
