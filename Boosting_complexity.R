@@ -164,6 +164,6 @@ my_colors = brewer.pal(8, "Set2")
 # Plot x and y
 par( mfrow = c( 1, 1 ) )
 clplot(x,y ,
-       ylab="time of Boosting",xlab	="amount of observations", main="", lwd=5, levels=c(1,2,3,4,5), col=my_colors, showcuts=T , bty="n")
+       ylab="time of Boosting",xlab	="amount of observations", main="", lwd=1, levels=c(1,2,3,4,5), col="black", showcuts=T , bty="n")
 
 write.csv(y, file = "c1_Boosting_60_200.csv", row.names = FALSE)
